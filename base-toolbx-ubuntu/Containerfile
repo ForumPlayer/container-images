@@ -1,5 +1,5 @@
 # quay.io/toolbx/ubuntu-toolbox:25.10
-FROM quay.io/toolbx/ubuntu-toolbox@sha256:d0e7551d85d25d98129c28109b2232deb5d098be8170575b64682dad6b457171 AS builder
+FROM quay.io/toolbx/ubuntu-toolbox@sha256:d0e7551d85d25d98129c28109b2232deb5d098be8170575b64682dad6b457171 AS base
 COPY toolbox-packages /
 
 ARG DEBIAN_FRONTEND=noninteractive
