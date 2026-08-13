@@ -8,7 +8,8 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - '${{ env.IMAGE_NAME }}/**'
+      - '.github/workflows/build-base-toolbx-ubuntu.yml'
+      - 'base-toolbx-ubuntu/**'
 
 jobs:
   build:
