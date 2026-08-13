@@ -1,6 +1,6 @@
-# quay.io/toolbx/ubuntu-toolbox:25.10
-FROM quay.io/toolbx/ubuntu-toolbox@sha256:d0e7551d85d25d98129c28109b2232deb5d098be8170575b64682dad6b457171 AS builder
-COPY toolbox-packages /
+# quay.io/toolbx/ubuntu-toolbox:26.04
+FROM quay.io/toolbx/ubuntu-toolbox@sha256:e016c22a8772fcaa3c036df552848f95ba16e62ecf2f38295d1194e5d5d0ff28 AS base
+COPY ./base-toolbx-ubuntu/toolbox-packages /
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN --mount=type=cache,dst=/var/cache/apt \
@@ -30,7 +30,7 @@ RUN --mount=type=cache,dst=/var/cache/apt \
             fi; \
         done; \
     done && \
-    apt-get remove -y attr && \
+    apt-get remove -y attr
 
 
 # https://github.com/coreos/chunkah
@@ -39,7 +39,7 @@ FROM quay.io/coreos/chunkah:latest AS chunkah
 # Rechunk
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}
-RUN --mount=from=builder,src=/,target=/chunkah,ro \
+RUN --mount=from=base,src=/,target=/chunkah,ro \
     --mount=type=bind,target=/run/src,rw \
     chunkah build \
     --max-layers 64 \
