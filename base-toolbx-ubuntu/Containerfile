@@ -31,24 +31,3 @@ RUN --mount=type=cache,dst=/var/cache/apt \
         done; \
     done && \
     apt-get remove -y attr && \
-
-
-# https://github.com/coreos/chunkah
-FROM quay.io/coreos/chunkah:latest AS chunkah
-
-# Rechunk
-ARG SOURCE_DATE_EPOCH
-ENV SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}
-RUN --mount=from=builder,src=/,target=/chunkah,ro \
-    --mount=type=bind,target=/run/src,rw \
-    chunkah build \
-    --max-layers 64 \
-    --label=com.github.containers.toolbox=true \
-    --label=name=devops-toolbox \
-    --label=usage="This image is meant to be used with the toolbox or distrobox command" \
-    --label=summary="A cloud-native terminal experience powered by Ubuntu" \
-    --label=maintainer=fp+oci@forumplayer.dev \
-    > /run/src/out.ociarchive
-
-# Deploy final chunked image
-FROM oci-archive:out.ociarchive
